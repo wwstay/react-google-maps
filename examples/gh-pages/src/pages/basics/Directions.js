@@ -1,6 +1,6 @@
 import { default as React, Component } from "react";
 
-import { GoogleMap, DirectionsRenderer } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, DirectionsRenderer } from "react-google-maps";
 
 /*
  * Add <script src="https://maps.googleapis.com/maps/api/js"></script> to your HTML to provide google.maps reference
@@ -35,18 +35,24 @@ export default class Directions extends Component {
     const { origin, directions } = this.state;
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        defaultZoom={7}
-        defaultCenter={origin}
-      >
-        {directions ? <DirectionsRenderer directions={directions} /> : null}
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            defaultZoom={7}
+            defaultCenter={origin}
+          >
+            {directions ? <DirectionsRenderer directions={directions} /> : null}
+          </GoogleMap>
+        }
+      />
     );
   }
 }

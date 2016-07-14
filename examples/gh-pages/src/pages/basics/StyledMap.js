@@ -1,6 +1,6 @@
 import { default as React, Component } from "react";
 
-import { GoogleMap } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap } from "react-google-maps";
 import { default as InfoBox } from "react-google-maps/lib/addons/InfoBox";
 
 import fancyMapStyles from "../../constants/fancyMapStyles.json";
@@ -19,33 +19,39 @@ export default class StyledMap extends Component {
     const myLatLng = new google.maps.LatLng(25.03, 121.6);
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        defaultZoom={5}
-        defaultCenter={myLatLng}
-        defaultOptions={{
-          styles: fancyMapStyles,
-        }}
-      >
-        <InfoBox
-          defaultPosition={myLatLng}
-          options={{ closeBoxURL: ``, enableEventPropagation: true }}
-        >
+      <GoogleMapLoader
+        containerElement={
           <div
-            style={{ backgroundColor: `yellow`, opacity: 0.75 }}
-            onClick={::this._click_from_children_of_infoBox}
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            defaultZoom={5}
+            defaultCenter={myLatLng}
+            defaultOptions={{
+              styles: fancyMapStyles,
+            }}
           >
-            <div style={{ fontSize: `16px`, fontColor: `#08233B` }}>
-              Taipei
-            </div>
-          </div>
-        </InfoBox>
-      </GoogleMap>
+            <InfoBox
+              defaultPosition={myLatLng}
+              options={{ closeBoxURL: ``, enableEventPropagation: true }}
+            >
+              <div
+                style={{ backgroundColor: `yellow`, opacity: 0.75 }}
+                onClick={::this._click_from_children_of_infoBox}
+              >
+                <div style={{ fontSize: `16px`, fontColor: `#08233B` }}>
+                  Taipei
+                </div>
+              </div>
+            </InfoBox>
+          </GoogleMap>
+        }
+      />
     );
   }
 }

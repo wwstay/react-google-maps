@@ -6,7 +6,7 @@ import {
 
 import { default as raf } from "raf";
 
-import { GoogleMap, Circle, InfoWindow } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Circle, InfoWindow } from "react-google-maps";
 
 const geolocation = (
   canUseDOM && navigator.geolocation || {
@@ -81,18 +81,24 @@ export default class Geolocation extends Component {
     }
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        defaultZoom={12}
-        center={center}
-      >
-        {contents}
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            defaultZoom={12}
+            center={center}
+          >
+            {contents}
+          </GoogleMap>
+        }
+      />
     );
   }
 }
