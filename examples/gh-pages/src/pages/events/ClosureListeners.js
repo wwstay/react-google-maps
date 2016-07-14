@@ -1,6 +1,6 @@
 import { default as React, Component } from "react";
 
-import { GoogleMap, Marker, InfoWindow } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Marker, InfoWindow } from "react-google-maps";
 
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/event-closure
@@ -99,33 +99,39 @@ export default class ClosureListeners extends Component {
     const { markers } = this.state;
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        defaultZoom={4}
-        defaultCenter={new google.maps.LatLng(-25.363882, 131.044922)}
-      >
-        {markers.map((marker, index) => {
-          const ref = `marker_${index}`;
-          const onClick = () => this.handleMarkerClick(marker);
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            defaultZoom={4}
+            defaultCenter={new google.maps.LatLng(-25.363882, 131.044922)}
+          >
+            {markers.map((marker, index) => {
+              const ref = `marker_${index}`;
+              const onClick = () => this.handleMarkerClick(marker);
 
-          return (
-            <Marker
-              key={ref}
-              ref={ref}
-              position={marker.position}
-              title={(index + 1).toString()}
-              onClick={onClick}
-            >
-              {marker.showInfo ? this.renderInfoWindow(ref, marker) : null}
-            </Marker>
-          );
-        })}
-      </GoogleMap>
+              return (
+                <Marker
+                  key={ref}
+                  ref={ref}
+                  position={marker.position}
+                  title={(index + 1).toString()}
+                  onClick={onClick}
+                >
+                  {marker.showInfo ? this.renderInfoWindow(ref, marker) : null}
+                </Marker>
+              );
+            })}
+          </GoogleMap>
+        }
+      />
     );
   }
 }

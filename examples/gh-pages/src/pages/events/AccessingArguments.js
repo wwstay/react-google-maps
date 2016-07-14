@@ -1,6 +1,6 @@
 import { default as React, Component } from "react";
 
-import { GoogleMap, Marker } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/event-arguments
@@ -29,22 +29,27 @@ export default class AccessingArguments extends Component {
     const { markers, center } = this.state;
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        ref="map"
-        defaultZoom={4}
-        center={center}
-        onClick={::this.handleMapClick}
-      >
-        {markers.map((marker, index) =>
-          <Marker position={marker.position} key={index} />
-        )}
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            defaultZoom={4}
+            center={center}
+            onClick={::this.handleMapClick}
+          >
+            {markers.map((marker, index) =>
+              <Marker position={marker.position} key={index} />
+            )}
+          </GoogleMap>
+        }
+      />
     );
   }
 }

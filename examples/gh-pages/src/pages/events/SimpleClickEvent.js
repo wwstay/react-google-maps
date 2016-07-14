@@ -2,7 +2,7 @@ import { default as omit } from "lodash/omit";
 
 import { default as React, Component } from "react";
 
-import { GoogleMap, Marker } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, Marker } from "react-google-maps";
 
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/event-simple
@@ -27,7 +27,7 @@ export default class SimpleClickEvent extends Component {
   }
 
   handleMapCenterChanged() {
-    const newPos = this.refs.map.getCenter();
+    const newPos = this._map.getCenter();
     if (newPos.equals(new google.maps.LatLng(this.props.initialCenter))) {
       // Notice: Check newPos equality here,
       // or it will fire center_changed event infinitely
@@ -53,24 +53,30 @@ export default class SimpleClickEvent extends Component {
     const { zoom, center } = this.state;
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...omit(this.props, [`initialCenter`]),
-          style: {
-            height: `100%`,
-          },
-        }}
-        ref="map"
-        zoom={zoom}
-        center={center}
-        onCenterChanged={::this.handleMapCenterChanged}
-      >
-        <Marker
-          defaultPosition={center}
-          title="Click to zoom"
-          onClick={::this.handleMarkerClick}
-        />
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...omit(this.props, [`initialCenter`])}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            ref={map => { this._map = map; }}
+            zoom={zoom}
+            center={center}
+            onCenterChanged={::this.handleMapCenterChanged}
+          >
+            <Marker
+              defaultPosition={center}
+              title="Click to zoom"
+              onClick={::this.handleMarkerClick}
+            />
+          </GoogleMap>
+        }
+      />
     );
   }
 }

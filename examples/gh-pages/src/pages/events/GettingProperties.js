@@ -1,6 +1,6 @@
 import { default as React, Component } from "react";
 
-import { GoogleMap, InfoWindow } from "react-google-maps";
+import { GoogleMapLoader, GoogleMap, InfoWindow } from "react-google-maps";
 
 /*
  * https://developers.google.com/maps/documentation/javascript/examples/event-properties
@@ -15,7 +15,7 @@ export default class GettingProperties extends Component {
   }
 
   handleZoomChanged() {
-    const zoomLevel = this.refs.map.getZoom();
+    const zoomLevel = this._map.getZoom();
     if (zoomLevel !== this.state.zoomLevel) {
       // Notice: Check zoomLevel equality here,
       // or it will fire zoom_changed event infinitely
@@ -31,23 +31,29 @@ export default class GettingProperties extends Component {
     const { zoomLevel, content } = this.state;
 
     return (
-      <GoogleMap
-        containerProps={{
-          ...this.props,
-          style: {
-            height: `100%`,
-          },
-        }}
-        ref="map"
-        defaultCenter={myLatLng}
-        zoom={zoomLevel}
-        onZoomChanged={::this.handleZoomChanged}
-      >
-        <InfoWindow
-          defaultPosition={myLatLng}
-          content={content}
-        />
-      </GoogleMap>
+      <GoogleMapLoader
+        containerElement={
+          <div
+            {...this.props}
+            style={{
+              height: `100%`,
+            }}
+          />
+        }
+        googleMapElement={
+          <GoogleMap
+            ref={map => { this._map = map; }}
+            defaultCenter={myLatLng}
+            zoom={zoomLevel}
+            onZoomChanged={::this.handleZoomChanged}
+          >
+            <InfoWindow
+              defaultPosition={myLatLng}
+              content={content}
+            />
+          </GoogleMap>
+        }
+      />
     );
   }
 }
