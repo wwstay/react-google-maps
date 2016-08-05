@@ -20,7 +20,7 @@ export default class App extends Component {
   };
 
   handleMapClick = this.handleMapClick.bind(this);
-  handleMarkerRightclick = this.handleMarkerRightclick.bind(this);
+  handleMarkerRightClick = this.handleMarkerRightClick.bind(this);
 
   componentDidMount() {
     setTimeout(() => {
@@ -59,7 +59,7 @@ export default class App extends Component {
     this.setState({ markers });
   }
 
-  handleMarkerRightclick(index, event) {
+  handleMarkerRightClick(index, event) {
     /*
      * All you modify is data, and the view is driven by data.
      * This is so called data-driven-development. (And yes, it's now in
@@ -77,9 +77,15 @@ export default class App extends Component {
   render() {
     return (
       <SimpleMap
+        containerElement={
+          <div style={{ height: `100%` }} />
+        }
+        mapElement={
+          <div style={{ height: `100%` }} />
+        }
         markers={this.state.markers}
         onMapClick={this.handleMapClick}
-        onMarkerRightclick={this.handleMarkerRightclick}
+        onMarkerRightClick={this.handleMarkerRightClick}
       />
     );
   }
