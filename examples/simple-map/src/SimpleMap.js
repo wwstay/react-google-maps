@@ -1,6 +1,7 @@
 import React from "react";
+
 import {
-  GoogleMapLoader,
+  withGoogleMap,
   GoogleMap,
   Marker,
 } from "react-google-maps";
@@ -14,35 +15,26 @@ import {
  * We use React 0.14 stateless function components here.
  * https://facebook.github.io/react/blog/2015/09/10/react-v0.14-rc1.html#stateless-function-components
  */
-const SimpleMap = props => (
-  <section style={{ height: `100%` }}>
-    <GoogleMapLoader
-      containerElement={
-        <div
-          {...props.containerElementProps}
-          style={{
-            height: `100%`,
-          }}
-        />
+const SimpleMap = withGoogleMap(props => (
+  <GoogleMap
+    ref={map => {
+      console.log(map);
+      if (map) {
+        console.log(map.getZoom());
       }
-      googleMapElement={
-        <GoogleMap
-          ref={(map) => console.log(map)}
-          defaultZoom={3}
-          defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
-          onClick={props.onMapClick}
-        >
-          {props.markers.map((marker, index) => (
-            <Marker
-              {...marker}
-              onRightclick={() => props.onMarkerRightclick(index)}
-            />
-          ))}
-        </GoogleMap>
-      }
-    />
-  </section>
-);
+    }}
+    defaultZoom={3}
+    defaultCenter={{ lat: -25.363882, lng: 131.044922 }}
+    onClick={props.onMapClick}
+  >
+    {props.markers.map((marker, index) => (
+      <Marker
+        {...marker}
+        onRightClick={() => props.onMarkerRightClick(index)}
+      />
+    ))}
+  </GoogleMap>
+));
 
 export default SimpleMap;
 
