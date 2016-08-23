@@ -52,6 +52,7 @@ class GoogleMapHolder extends Component {
 
   static propTypes = {
     map: PropTypes.object.isRequired,
+    bounds: PropTypes.object,
   }
 
   static _createMap(domEl, mapProps) {
@@ -70,6 +71,19 @@ class GoogleMapHolder extends Component {
 
   getChildContext() {
     return { mapHolderRef: this };
+  }
+
+  componentWillMount() {
+    if (Object.keys(this.props.bounds).length !== 0) {
+      this.props.map.fitBounds(this.props.bounds);
+      this.props.map.panToBounds(this.props.bounds);
+    }
+  }
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.bounds).length !== 0) {
+      nextProps.map.fitBounds(nextProps.bounds);
+      nextProps.map.panToBounds(nextProps.bounds);
+    }
   }
 
   getMap() {
