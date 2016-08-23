@@ -57,6 +57,7 @@ export default class GoogleMapHolder extends Component {
 
   static propTypes = {
     map: PropTypes.object.isRequired,
+    bounds: PropTypes.object,
   }
 
   static _createMap(domEl, mapProps) {
@@ -67,6 +68,20 @@ export default class GoogleMapHolder extends Component {
     );
     // https://developers.google.com/maps/documentation/javascript/3.exp/reference#Map
     return new google.maps.Map(domEl, composeOptions(mapProps, mapControlledPropTypes));
+  }
+
+  componentWillMount() {
+    if (Object.keys(this.props.bounds).length !== 0) {
+      this.props.map.fitBounds(this.props.bounds);
+      this.props.map.panToBounds(this.props.bounds);
+    }
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.bounds).length !== 0) {
+      nextProps.map.fitBounds(nextProps.bounds);
+      nextProps.map.panToBounds(nextProps.bounds);
+    }
   }
 
   getMap() {
