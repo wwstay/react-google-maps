@@ -30,6 +30,7 @@ export default class GoogleMapLoader extends Component {
 
   state = {
     map: null,
+    bounds: null,
   };
 
   mountGoogleMap(domEl) {
@@ -42,7 +43,8 @@ export default class GoogleMapLoader extends Component {
     // React's children creators.
     //
     const map = GoogleMapHolder._createMap(domEl, restProps);
-    this.setState({ map });
+    const bounds = GoogleMapHolder._createBounds();
+    this.setState({ map, bounds });
   }
 
   renderChild() {
@@ -59,6 +61,7 @@ export default class GoogleMapLoader extends Component {
       //
       return React.cloneElement(this.props.googleMapElement, {
         map: this.state.map,
+        bounds: this.state.bounds,
       });
     }
   }
